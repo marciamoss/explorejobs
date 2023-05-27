@@ -3,7 +3,6 @@
     "name": "explorejobs",
     "slug": "explorejobs",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -25,6 +24,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d5304f63-4cf5-47f9-92d7-08a2a944d014"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d5304f63-4cf5-47f9-92d7-08a2a944d014"
     }
   }
 }
