@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, View, ActivityIndicator, TextInput } from "react-native";
 import MapView from "react-native-maps";
 import { Button } from "react-native-elements";
 import Popup from "../components/Popup";
+import { fetchJobs, jobsInfo, jobsListing } from "../store";
 
-const MapScreen = ({
-  fetchJobs,
-  setRegion,
-  region,
-  navigation,
-  searchError,
-  resetError,
-  noListing,
-  resetNoListing,
-}) => {
+const MapScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { region, searchError, noListing } = useSelector((state) => state.jobs);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState(false);
@@ -27,7 +22,7 @@ const MapScreen = ({
     if (searchError) {
       setModalVisible(true);
       setPopupText("Search Failed on this region");
-      resetError();
+      dispatch(jobsInfo({ searchError: false }));
     }
   }, [searchError]);
 
@@ -35,13 +30,9 @@ const MapScreen = ({
     if (noListing) {
       setModalVisible(true);
       setPopupText("No Jobs Found, Try a different location");
-      resetNoListing();
+      dispatch(jobsInfo({ noListing: false }));
     }
   }, [noListing]);
-
-  const onRegionChangeComplete = (region) => {
-    setRegion(region);
-  };
 
   if (!mapLoaded) {
     return (
@@ -51,16 +42,18 @@ const MapScreen = ({
     );
   }
   const onButtonPress = () => {
-    fetchJobs(region, jobTitle, () => {
-      navigation.navigate("Main", { screen: "Deck" });
-    });
+    dispatch(
+      fetchJobs(jobsInfo, jobsListing, jobTitle, () => {
+        navigation.navigate("Main", { screen: "Deck" });
+      })
+    );
   };
   return (
     <View style={styles.container}>
       <MapView
         region={region}
         style={styles.map}
-        onRegionChangeComplete={onRegionChangeComplete}
+        onRegionChangeComplete={(region) => dispatch(jobsInfo({ region }))}
       />
       <View style={styles.inputContainer}>
         <TextInput

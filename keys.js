@@ -10,8 +10,8 @@ import {
   JOB_ROOT_URL,
   JOB_API_KEY,
   JOB_ENGINE,
-  MAP_API_KEY,
   JOB_DETAILS_ENGINE,
+  MAP_API_KEY,
 } from "@env";
 
 exports.FIREBASECONFIG = {
@@ -23,4 +23,27 @@ exports.FIREBASECONFIG = {
   messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
   appId: FIREBASE_APP_ID,
   measurementId: FIREBASE_MEASUREMENT_ID,
+};
+
+exports.JOB = {
+  url: JOB_ROOT_URL,
+};
+
+exports.JOBDETAILS = {
+  jde: JOB_DETAILS_ENGINE,
+};
+
+exports.JOB_QUERY_PARAMS = {
+  api_key: JOB_API_KEY,
+  engine: JOB_ENGINE,
+  q: "jobs",
+  lrad: 10,
+};
+
+exports.SEARCH = {
+  api_key: JOB_API_KEY,
+};
+
+exports.GMAP = {
+  api_key: MAP_API_KEY,
 };

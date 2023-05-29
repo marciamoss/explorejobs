@@ -1,8 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { View } from "react-native";
 import { Button } from "react-native-elements";
+import { clearLikedJobs } from "../store";
 
-const SettingsScreen = ({ clearLikedJobs, navigation }) => {
+const SettingsScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   return (
     <View>
       <Button
@@ -10,7 +13,10 @@ const SettingsScreen = ({ clearLikedJobs, navigation }) => {
         icon={{ name: "delete-forever", color: "white", size: 35 }}
         titleStyle={{ fontSize: 24 }}
         buttonStyle={{ backgroundColor: "#F44336", height: 96 }}
-        onPress={clearLikedJobs}
+        onPress={() => {
+          dispatch(clearLikedJobs());
+          navigation.navigate("Review");
+        }}
       />
     </View>
   );

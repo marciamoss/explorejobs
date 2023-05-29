@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, Linking, Pressable } from "react-native";
-import { Card } from "react-native-elements";
-import { connect } from "react-redux";
+import { Card, Button } from "react-native-elements";
+import { useSelector } from "react-redux";
 import Popup from "../components/Popup";
 
-const ReviewScreen = ({ likedJobs }) => {
+const ReviewScreen = ({ navigation }) => {
+  const { likedJobs } = useSelector((state) => state.likedJobs);
   const [modalVisible, setModalVisible] = useState(false);
-
   const renderLikedJobs = () => {
     return likedJobs.map((job) => {
       const {
@@ -74,9 +74,34 @@ const ReviewScreen = ({ likedJobs }) => {
       );
     });
   };
+  const renderNoLikedJobs = () => {
+    return (
+      <Card
+        containerStyle={{
+          borderWidth: 2,
+          borderColor: "lightgrey",
+          borderStyle: "solid",
+          borderRadius: 10,
+        }}
+      >
+        <Card.Title>No Liked Jobs</Card.Title>
+        <Button
+          title="Back To Jobs"
+          icon={{ name: "description", color: "white", size: 35 }}
+          titleStyle={{ fontSize: 24 }}
+          buttonStyle={{ backgroundColor: "#03A9F4", height: 80 }}
+          onPress={() => navigation.navigate("Deck")}
+        />
+      </Card>
+    );
+  };
   return (
     <View>
-      <ScrollView>{renderLikedJobs()}</ScrollView>
+      {likedJobs.length > 0 ? (
+        <ScrollView>{renderLikedJobs()}</ScrollView>
+      ) : (
+        <ScrollView>{renderNoLikedJobs()}</ScrollView>
+      )}
     </View>
   );
 };
@@ -104,7 +129,5 @@ const styles = {
     textAlign: "center",
   },
 };
-const mapStateToProps = (state) => {
-  return { likedJobs: state.likedJobs };
-};
-export default connect(mapStateToProps)(ReviewScreen);
+
+export default ReviewScreen;

@@ -1,13 +1,16 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 import MapScreen from "../screens/MapScreen";
 import DeckScreen from "../screens/DeckScreen";
 import Review from "./Review";
 
-const Main = ({ jobs, likedJobs }) => {
+const Main = () => {
+  const { jobs } = useSelector((state) => state.jobs);
+  const { likedJobs } = useSelector((state) => state.likedJobs);
+
   const Tab = createBottomTabNavigator();
-  /**        icon={{ name: "delete-forever", color: "white", size: 35 }} */
   return (
     <Tab.Navigator>
       <Tab.Screen

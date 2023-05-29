@@ -6,16 +6,6 @@ import axios from "axios";
 const ROOT_URL =
   "https://us-central1-one-time-password-cb0af.cloudfunctions.net";
 
-// export const phoneStatus = () => async (dispatch) => {
-//   let token = await AsyncStorage.getItem("exploreJobs_token");
-//   if (token) {
-//     // dispatch({ type: PHONE_LOGIN_SUCCESS, payload: token });
-//     return { token };
-//   } else {
-//     initiateLogin(phone);
-//   }
-// };
-
 const initiateLogin = (authInfo, phone) => async (dispatch) => {
   dispatch(authInfo({ loading: true }));
   let token = await AsyncStorage.getItem("exploreJobs_token");

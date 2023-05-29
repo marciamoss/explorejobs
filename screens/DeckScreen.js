@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { View, Text, Platform, Pressable, Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import { Card, Button } from "react-native-elements";
+import { useSelector, useDispatch } from "react-redux";
 import Swipe from "../components/Swipe";
 import Popup from "../components/Popup";
+import { likeJob, liked } from "../store";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-const DeckScreen = ({ jobs, region, likeJob, navigation }) => {
+const DeckScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { jobs, region } = useSelector((state) => state.jobs);
   const [modalVisible, setModalVisible] = useState(false);
   const [cardMove, setCardMove] = useState(false);
 
@@ -112,9 +116,7 @@ const DeckScreen = ({ jobs, region, likeJob, navigation }) => {
             icon={{ name: "my-location", color: "white", size: 35 }}
             titleStyle={{ fontSize: 24 }}
             buttonStyle={{ backgroundColor: "#03A9F4", height: 80 }}
-            onPress={() => {
-              navigation.navigate("Map");
-            }}
+            onPress={() => navigation.navigate("Map")}
           />
         </Card>
       </View>
@@ -130,7 +132,7 @@ const DeckScreen = ({ jobs, region, likeJob, navigation }) => {
         data={jobs}
         renderCard={renderCard}
         renderNoMoreCards={renderNoMoreCards}
-        onSwipeRight={(job) => likeJob(job)}
+        onSwipeRight={(job) => dispatch(likeJob(liked, job))}
         keyProp="job_id"
         setCardMove={setCardMove}
       />

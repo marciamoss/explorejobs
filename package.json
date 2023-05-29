@@ -22,7 +22,6 @@
     "expo-status-bar": "~1.4.4",
     "expo-updates": "~0.16.4",
     "firebase": "^9.22.0",
-    "latlng-to-zip": "^0.0.2",
     "lodash": "^4.17.21",
     "qs": "^6.11.2",
     "react": "18.2.0",

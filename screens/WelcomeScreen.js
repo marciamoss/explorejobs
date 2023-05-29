@@ -21,7 +21,7 @@ const WelcomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      await AsyncStorage.removeItem("exploreJobs_token");
+      // await AsyncStorage.removeItem("exploreJobs_token");
       let token = await AsyncStorage.getItem("exploreJobs_token");
       if (token) {
         setToken(token);
