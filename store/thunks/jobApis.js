@@ -31,6 +31,7 @@ const reverseGeocode = async (region) => {
 const fetchJobs =
   (jobsInfo, jobsListing, jobTitle, callback) => async (dispatch, getState) => {
     dispatch(jobsListing([]));
+    dispatch(jobsInfo({ searching: true }));
     try {
       const { region } = getState().jobs;
       const { zip } = await reverseGeocode(region);
@@ -38,6 +39,7 @@ const fetchJobs =
       let results = await axios.get(url);
 
       if (results && results?.data && results?.data?.jobs_results) {
+        dispatch(jobsInfo({ searching: false }));
         dispatch(jobsListing(results?.data?.jobs_results));
         if (results?.data?.jobs_results.length === 0) {
           dispatch(jobsInfo({ noListing: true }));
@@ -45,12 +47,12 @@ const fetchJobs =
           callback();
         }
       } else {
-        dispatch(jobsInfo({ noListing: true }));
+        dispatch(jobsInfo({ noListing: true, searching: false }));
         dispatch(jobsListing([]));
       }
     } catch (e) {
       console.log("fetchJobs error", e.response.data);
-      dispatch(jobsInfo({ searchError: true }));
+      dispatch(jobsInfo({ searchError: true, searching: false }));
     }
   };
 export { fetchJobs };

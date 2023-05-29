@@ -1,39 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import _ from "lodash";
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  Dimensions,
-  Platform,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet, Platform } from "react-native";
 import { Button } from "react-native-elements";
-import * as ScreenOrientation from "expo-screen-orientation";
+import { useGetOrientation } from "../hooks";
 
 const Slides = ({ data, onComplete }) => {
   const scrollRef = useRef();
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [screenHeight, setScreenHeight] = useState(
-    Dimensions.get("window").height
-  );
+  const [screenWidth, screenHeight, orientation] = useGetOrientation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [oSet, setOSet] = useState(0);
   const [iSet, setISet] = useState({ bottom: 0, left: 0, right: 0, top: 0 });
-
-  useEffect(() => {
-    const subscription = ScreenOrientation.addOrientationChangeListener(
-      (evt) => {
-        setScreenWidth(Dimensions.get("window").width);
-        setScreenHeight(Dimensions.get("window").height);
-      }
-    );
-    return () => {
-      ScreenOrientation.removeOrientationChangeListener(subscription);
-    };
-  }, []);
 
   useEffect(() => {
     setOSet(screenWidth * currentSlide);

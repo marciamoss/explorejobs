@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, View, ActivityIndicator, TextInput } from "react-native";
 import MapView from "react-native-maps";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import Popup from "../components/Popup";
 import { fetchJobs, jobsInfo, jobsListing } from "../store";
 
 const MapScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { region, searchError, noListing } = useSelector((state) => state.jobs);
+  const { region, searchError, noListing, searching } = useSelector(
+    (state) => state.jobs
+  );
   const [mapLoaded, setMapLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState(false);
@@ -55,25 +57,34 @@ const MapScreen = ({ navigation }) => {
         style={styles.map}
         onRegionChangeComplete={(region) => dispatch(jobsInfo({ region }))}
       />
-      <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.searchSection,
+          {
+            backgroundColor: "#009688",
+            height: 80,
+            marginLeft: 15,
+            marginRight: 15,
+          },
+        ]}
+      >
+        <Button
+          title={
+            searching ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <Icon color="white" name="search" size={35}></Icon>
+            )
+          }
+          buttonStyle={{ backgroundColor: "#009688" }}
+          onPress={onButtonPress}
+        />
         <TextInput
           style={styles.input}
           onChangeText={setJobTitle}
           value={jobTitle}
           placeholder="Job Title (Optional)"
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Search This Area"
-          buttonStyle={{
-            backgroundColor: "#009688",
-            height: 80,
-            marginLeft: 15,
-            marginRight: 15,
-          }}
-          icon={{ name: "search", color: "white", size: 35 }}
-          onPress={onButtonPress}
+          editable={!searching}
         />
       </View>
       {modalVisible ? (
@@ -96,27 +107,30 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  buttonContainer: {
-    position: "absolute",
-    bottom: 20,
-    left: 0,
-    right: 0,
-  },
-  inputContainer: {
-    position: "absolute",
-    top: 50,
-    left: 0,
-    right: 0,
-  },
   input: {
+    flex: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginRight: 10,
     height: 60,
-    margin: 12,
-    borderWidth: 5,
-    padding: 10,
-    borderColor: "#009688",
     backgroundColor: "white",
-    fontSize: 18,
     color: "#009688",
+    fontSize: 18,
+  },
+  searchSection: {
+    position: "absolute",
+    top: 60,
+    left: 0,
+    right: 0,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  searchIcon: {
+    padding: 5,
+    backgroundColor: "#009688",
   },
 });
 

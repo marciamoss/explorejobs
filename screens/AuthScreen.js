@@ -5,13 +5,12 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Dimensions,
   Text,
   ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-elements";
-import * as ScreenOrientation from "expo-screen-orientation";
 import { initiateLogin, authInfo, verifyCode, resendCode } from "../store";
+import { useGetOrientation } from "../hooks";
 
 const AuthScreen = ({ navigation }) => {
   const {
@@ -28,39 +27,7 @@ const AuthScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [inputError, setInputError] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [screenHeight, setScreenHeight] = useState(
-    Dimensions.get("window").height
-  );
-  const [orientation, setOrientation] = useState("");
-
-  useEffect(() => {
-    ScreenOrientation.getOrientationAsync().then((info) => {
-      const o = info;
-      setOrientation(
-        o === 1 || o === 2 ? "Portrait" : o === 3 || o === 4 ? "Landscape" : ""
-      );
-    });
-    const subscription = ScreenOrientation.addOrientationChangeListener(
-      (evt) => {
-        const o = evt.orientationInfo.orientation;
-        setOrientation(
-          o === 1 || o === 2
-            ? "Portrait"
-            : o === 3 || o === 4
-            ? "Landscape"
-            : ""
-        );
-        setScreenWidth(Dimensions.get("window").width);
-        setScreenHeight(Dimensions.get("window").height);
-      }
-    );
-    return () => {
-      ScreenOrientation.removeOrientationChangeListener(subscription);
-    };
-  }, []);
+  const [screenWidth, screenHeight, orientation] = useGetOrientation();
 
   useEffect(() => {
     if (token) {
@@ -121,7 +88,7 @@ const AuthScreen = ({ navigation }) => {
       <View
         style={[
           {
-            flexDirection: orientation === "Landscape" ? "row" : "column",
+            flexDirection: orientation === "landscape" ? "row" : "column",
             justifyContent: "center",
             alignItems: "center",
           },
@@ -138,7 +105,7 @@ const AuthScreen = ({ navigation }) => {
                 : "lightblue",
               backgroundColor: codeSent || codeValid ? "lightgrey" : "white",
               width:
-                orientation === "Landscape"
+                orientation === "landscape"
                   ? screenWidth * 0.4
                   : screenWidth * 0.9,
             },
@@ -159,7 +126,7 @@ const AuthScreen = ({ navigation }) => {
               borderColor: codeSent || codeValid ? "lightblue" : "lightgrey",
               backgroundColor: codeSent || codeValid ? "white" : "lightgrey",
               width:
-                orientation === "Landscape"
+                orientation === "landscape"
                   ? screenWidth * 0.2
                   : screenWidth * 0.9,
             },
@@ -191,7 +158,7 @@ const AuthScreen = ({ navigation }) => {
             flexDirection: "row",
             justifyContent: "space-between",
             width:
-              orientation === "Landscape"
+              orientation === "landscape"
                 ? screenWidth * 0.7
                 : screenWidth * 0.97,
           },
@@ -201,7 +168,7 @@ const AuthScreen = ({ navigation }) => {
           <Button
             type="clear"
             buttonStyle={{
-              marginTop: orientation === "Landscape" ? 0 : 15,
+              marginTop: orientation === "landscape" ? 0 : 15,
               justifyContent: "flex-end",
               paddingTop: 0,
             }}
@@ -220,7 +187,7 @@ const AuthScreen = ({ navigation }) => {
           <Button
             type="clear"
             buttonStyle={{
-              marginTop: orientation === "Landscape" ? 0 : 15,
+              marginTop: orientation === "landscape" ? 0 : 15,
               justifyContent: "flex-start",
               paddingTop: 0,
             }}

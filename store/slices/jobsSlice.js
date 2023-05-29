@@ -9,6 +9,7 @@ const initialState = {
     longitudeDelta: 0.04,
     latitudeDelta: 0.09,
   },
+  searching: false,
   searchError: null,
   noListing: false,
 };

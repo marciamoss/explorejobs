@@ -8,6 +8,13 @@ const Popup = ({ modalVisible, setModalVisible, modalText }) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
+        supportedOrientations={[
+          "portrait",
+          "landscape",
+          "portrait-upside-down",
+          "landscape-left",
+          "landscape-right",
+        ]}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
