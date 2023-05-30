@@ -15,7 +15,7 @@ const useGetOrientation = () => {
     ScreenOrientation.getOrientationAsync().then((info) => {
       const o = info;
       setOrientation(
-        o === 1 || o === 2 ? "Portrait" : o === 3 || o === 4 ? "Landscape" : ""
+        o === 1 || o === 2 ? "portrait" : o === 3 || o === 4 ? "landscape" : ""
       );
     });
     const subscription = ScreenOrientation.addOrientationChangeListener(
