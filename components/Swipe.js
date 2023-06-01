@@ -3,14 +3,12 @@ import {
   View,
   Animated,
   PanResponder,
-  Dimensions,
   LayoutAnimation,
   UIManager,
-  Platform,
+  Text,
 } from "react-native";
+import { useGetOrientation } from "../hooks";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
 const Swipe = ({
@@ -21,7 +19,11 @@ const Swipe = ({
   renderNoMoreCards,
   keyProp = "id",
   setCardMove,
+  setSwipeCompleted,
+  lastCard,
 }) => {
+  const [screenWidth, screenHeight, orientation, layoutChange, swipeThreshold] =
+    useGetOrientation();
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -49,9 +51,9 @@ const Swipe = ({
       position.setValue({ x: gesture.dx, y: gesture.dy });
     },
     onPanResponderRelease: (event, gesture) => {
-      if (gesture.dx > SWIPE_THRESHOLD) {
+      if (gesture.dx > swipeThreshold) {
         forceSwipe("right");
-      } else if (gesture.dx < -SWIPE_THRESHOLD) {
+      } else if (gesture.dx < -swipeThreshold) {
         forceSwipe("left");
       } else {
         resetPosition();
@@ -60,7 +62,7 @@ const Swipe = ({
   });
 
   const forceSwipe = (direction) => {
-    const x = direction === "right" ? SCREEN_WIDTH : -SCREEN_WIDTH;
+    const x = direction === "right" ? screenWidth : -screenWidth;
     Animated.timing(position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION,
@@ -70,6 +72,7 @@ const Swipe = ({
   const onSwipeComplete = (direction) => {
     const item = data[index];
     direction === "right" ? onSwipeRight(item) : onSwipeLeft(item);
+    setSwipeCompleted(true);
     setIndex(index + 1);
     position.setValue({ x: 0, y: 0 });
   };
@@ -81,7 +84,7 @@ const Swipe = ({
   };
   const getCardStyle = () => {
     const rotate = position.x.interpolate({
-      inputRange: [-SCREEN_WIDTH * 2.0, 0, SCREEN_WIDTH * 2.0],
+      inputRange: [-screenWidth * 2.0, 0, screenWidth * 2.0],
       outputRange: ["-120deg", "0deg", "120deg"],
     });
     return {
@@ -89,8 +92,9 @@ const Swipe = ({
       transform: [{ rotate }],
     };
   };
+
   const renderCards = (data) => {
-    if (index >= data.length) {
+    if (lastCard) {
       return renderNoMoreCards();
     }
     const deck = data.map((item, dataIndex) => {
@@ -101,29 +105,31 @@ const Swipe = ({
         return (
           <Animated.View
             key={item[keyProp]}
-            style={[getCardStyle(), styles.cardStyle]}
+            style={[getCardStyle(), styles.cardStyle, { width: screenWidth }]}
             {...panResponder.panHandlers}
           >
-            {renderCard(item, dataIndex, data.length, true)}
+            {renderCard(item, true)}
           </Animated.View>
         );
       }
+
       return (
-        <Animated.View key={item[keyProp]} style={styles.cardStyle}>
-          {renderCard(item, dataIndex, data.length, false)}
+        <Animated.View
+          key={item[keyProp]}
+          style={[styles.cardStyle, , { width: screenWidth }]}
+        >
+          {renderCard(item, false)}
         </Animated.View>
       );
     });
     return deck.reverse();
   };
-
   return <View>{renderCards(data)}</View>;
 };
 
 const styles = {
   cardStyle: {
     position: "absolute",
-    width: SCREEN_WIDTH,
   },
 };
 

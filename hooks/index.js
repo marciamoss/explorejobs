@@ -1,2 +1,4 @@
 import useGetOrientation from "./use-get-orientation";
-export { useGetOrientation };
+import useFeedJobs from "./use-feed-jobs";
+
+export { useGetOrientation, useFeedJobs };

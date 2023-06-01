@@ -10,6 +10,25 @@ const useGetOrientation = () => {
     Dimensions.get("window").height
   );
   const [orientation, setOrientation] = useState("");
+  const [swipeThreshold, setSwipThreshold] = useState(null);
+  const [layoutChange, setLayoutChange] = useState(false);
+  let timerId = "";
+
+  useEffect(() => {
+    if (screenWidth) {
+      setSwipThreshold(0.25 * screenWidth);
+    }
+  }, [screenWidth]);
+
+  useEffect(() => {
+    setLayoutChange(true);
+    let timerId = setTimeout(() => {
+      setLayoutChange(false);
+    }, 50);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [orientation]);
 
   useEffect(() => {
     ScreenOrientation.getOrientationAsync().then((info) => {
@@ -20,6 +39,7 @@ const useGetOrientation = () => {
     });
     const subscription = ScreenOrientation.addOrientationChangeListener(
       (evt) => {
+        setLayoutChange(true);
         const o = evt.orientationInfo.orientation;
         setOrientation(
           o === 1 || o === 2
@@ -30,14 +50,18 @@ const useGetOrientation = () => {
         );
         setScreenWidth(Dimensions.get("window").width);
         setScreenHeight(Dimensions.get("window").height);
+        timerId = setTimeout(() => {
+          setLayoutChange(false);
+        }, 50);
       }
     );
     return () => {
       ScreenOrientation.removeOrientationChangeListener(subscription);
+      clearTimeout(timerId);
     };
   }, []);
 
-  return [screenWidth, screenHeight, orientation];
+  return [screenWidth, screenHeight, orientation, layoutChange, swipeThreshold];
 };
 
 export default useGetOrientation;
