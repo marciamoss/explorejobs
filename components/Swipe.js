@@ -5,30 +5,34 @@ import {
   PanResponder,
   LayoutAnimation,
   UIManager,
-  Text,
 } from "react-native";
 import { useGetOrientation } from "../hooks";
 
 const SWIPE_OUT_DURATION = 250;
 
 const Swipe = ({
-  data,
   renderCard,
   onSwipeRight = () => {},
   onSwipeLeft = () => {},
-  renderNoMoreCards,
   keyProp = "id",
   setCardMove,
   setSwipeCompleted,
-  lastCard,
+  currentJob,
+  nextJob,
 }) => {
-  const [screenWidth, screenHeight, orientation, layoutChange, swipeThreshold] =
-    useGetOrientation();
+  const [swipeThreshold, setSwipeThreshold] = useState(null);
+  const [screenWidth] = useGetOrientation();
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (screenWidth) {
+      setSwipeThreshold(0.25 * screenWidth);
+    }
+  }, [screenWidth]);
+
+  useEffect(() => {
     setIndex(0);
-  }, [data]);
+  }, [currentJob]);
 
   useLayoutEffect(() => {
     UIManager.setLayoutAnimationEnabledExperimental &&
@@ -70,7 +74,8 @@ const Swipe = ({
     }).start(() => onSwipeComplete(direction));
   };
   const onSwipeComplete = (direction) => {
-    const item = data[index];
+    const item = currentJob;
+
     direction === "right" ? onSwipeRight(item) : onSwipeLeft(item);
     setSwipeCompleted(true);
     setIndex(index + 1);
@@ -93,38 +98,34 @@ const Swipe = ({
     };
   };
 
-  const renderCards = (data) => {
-    if (lastCard) {
-      return renderNoMoreCards();
-    }
-    const deck = data.map((item, dataIndex) => {
-      if (dataIndex < index) {
-        return null;
-      }
-      if (dataIndex === index) {
-        return (
-          <Animated.View
-            key={item[keyProp]}
-            style={[getCardStyle(), styles.cardStyle, { width: screenWidth }]}
-            {...panResponder.panHandlers}
-          >
-            {renderCard(item, true)}
-          </Animated.View>
-        );
-      }
-
-      return (
+  const renderCards = (currentJob, nextJob) => {
+    return (
+      <>
         <Animated.View
-          key={item[keyProp]}
-          style={[styles.cardStyle, , { width: screenWidth }]}
+          key={currentJob[keyProp]}
+          style={[
+            getCardStyle(),
+            styles.cardStyle,
+            { width: screenWidth, zIndex: 99 },
+          ]}
+          {...panResponder.panHandlers}
         >
-          {renderCard(item, false)}
+          {renderCard(currentJob, true)}
         </Animated.View>
-      );
-    });
-    return deck.reverse();
+        {nextJob ? (
+          <Animated.View
+            key={nextJob[keyProp]}
+            style={[styles.cardStyle, { width: screenWidth, zIndex: -1 }]}
+          >
+            {renderCard(nextJob, false)}
+          </Animated.View>
+        ) : (
+          ""
+        )}
+      </>
+    );
   };
-  return <View>{renderCards(data)}</View>;
+  return <View>{renderCards(currentJob, nextJob)}</View>;
 };
 
 const styles = {

@@ -10,15 +10,8 @@ const useGetOrientation = () => {
     Dimensions.get("window").height
   );
   const [orientation, setOrientation] = useState("");
-  const [swipeThreshold, setSwipThreshold] = useState(null);
   const [layoutChange, setLayoutChange] = useState(false);
   let timerId = "";
-
-  useEffect(() => {
-    if (screenWidth) {
-      setSwipThreshold(0.25 * screenWidth);
-    }
-  }, [screenWidth]);
 
   useEffect(() => {
     setLayoutChange(true);
@@ -61,7 +54,7 @@ const useGetOrientation = () => {
     };
   }, []);
 
-  return [screenWidth, screenHeight, orientation, layoutChange, swipeThreshold];
+  return [screenWidth, screenHeight, orientation, layoutChange];
 };
 
 export default useGetOrientation;

@@ -17,7 +17,7 @@ import { useGetOrientation, useFeedJobs } from "../hooks";
 const DeckScreen = ({ navigation }) => {
   const [screenWidth, screenHeight, orientation, layoutChange] =
     useGetOrientation();
-  const [activeJobs, lastCard, currentJobIndex, setSwipeCompleted, totalJobs] =
+  const [currentJobIndex, setSwipeCompleted, totalJobs, currentJob, nextJob] =
     useFeedJobs();
   const dispatch = useDispatch();
 
@@ -199,7 +199,7 @@ const DeckScreen = ({ navigation }) => {
       </View>
     );
   }
-  if (activeJobs.length > 0) {
+  if (currentJob) {
     return (
       <View
         style={{
@@ -209,17 +209,18 @@ const DeckScreen = ({ navigation }) => {
         }}
       >
         <Swipe
-          data={activeJobs}
           renderCard={renderCard}
-          renderNoMoreCards={renderNoMoreCards}
           onSwipeRight={(job) => dispatch(likeJob(liked, job))}
           keyProp="job_id"
           setCardMove={setCardMove}
           setSwipeCompleted={setSwipeCompleted}
-          lastCard={lastCard}
+          currentJob={currentJob}
+          nextJob={nextJob}
         />
       </View>
     );
+  } else {
+    return renderNoMoreCards();
   }
 };
 
@@ -251,7 +252,6 @@ const styles = {
     opacity: 0.7,
   },
   cardDivider: {
-    // marginTop: 5,
     marginBottom: 0,
   },
 };
