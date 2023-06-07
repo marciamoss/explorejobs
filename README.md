@@ -24,8 +24,10 @@ Expo go is needed to see the app's functionality as its not available in app sto
 
 **IOS:**
 
-<img width="268" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/07181fdc-d256-4063-ad02-0b50c939f06f">
+<img width="270" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/b282b12a-4b86-4e13-9b1c-929043efdba6">
+
 
 **Android:**
 
-<img width="271" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/521d902f-ae91-4a75-abe8-080076db2fb8">
+<img width="267" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/cac9614f-9e01-4e72-97f1-2effbce6facc">
+
