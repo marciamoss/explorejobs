@@ -177,6 +177,7 @@ const AuthScreen = ({ navigation }) => {
             disabledStyle={{ backgroundColor: "transparent" }}
             title={loading ? "" : "Try a different number"}
             onPress={() => {
+              setCode("");
               dispatch(authInfo({ codeValid: false, codeSent: false }));
             }}
           />
