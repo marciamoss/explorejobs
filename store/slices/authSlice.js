@@ -5,13 +5,11 @@ const firebaseConfig = keys.FIREBASECONFIG;
 const initialState = {
   firebaseConfig,
   token: null,
-  codeValid: false,
-  codeSent: false,
-  codeSentDate: "",
   codeSentError: false,
   loading: false,
   verifyCodeError: false,
   resend: false,
+  verificationId: null,
 };
 
 const authSlice = createSlice({

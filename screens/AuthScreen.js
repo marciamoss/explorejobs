@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Alert,
@@ -9,25 +9,33 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Button } from "react-native-elements";
-import { initiateLogin, authInfo, verifyCode, resendCode } from "../store";
+import { initiateLogin, authInfo, verifyCode } from "../store";
 import { useGetOrientation } from "../hooks";
+import { initializeApp } from "firebase/app";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 
 const AuthScreen = ({ navigation }) => {
+  const recaptchaVerifier = useRef(null);
   const {
+    firebaseConfig,
     token,
-    codeValid,
-    codeSent,
-    codeSentDate,
     loading,
     codeSentError,
     verifyCodeError,
-    resend,
+    verificationId,
   } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [inputError, setInputError] = useState(false);
   const [screenWidth, screenHeight, orientation] = useGetOrientation();
+  const [app, setApp] = useState(null);
+
+  useEffect(() => {
+    if (firebaseConfig) {
+      setApp(initializeApp(firebaseConfig));
+    }
+  }, [firebaseConfig]);
 
   useEffect(() => {
     if (token) {
@@ -59,15 +67,13 @@ const AuthScreen = ({ navigation }) => {
       );
       return;
     }
-    if (resend) {
-      dispatch(resendCode(authInfo, phone));
-    } else if (codeSent || codeValid) {
+    if (verificationId) {
       if (!code) {
         Alert.alert("Alert", "Enter the code");
       }
-      dispatch(verifyCode(authInfo, phone, code));
+      dispatch(verifyCode(authInfo, phone, code, app));
     } else {
-      dispatch(initiateLogin(authInfo, phone));
+      dispatch(initiateLogin(authInfo, phone, recaptchaVerifier.current, app));
     }
   };
 
@@ -81,8 +87,8 @@ const AuthScreen = ({ navigation }) => {
       }}
     >
       <Text style={styles.textStyle}>
-        {codeSent || codeValid
-          ? `Enter the verification Code texted to "${phone}" on "${codeSentDate}"`
+        {verificationId
+          ? `Enter the verification Code texted to "${phone}"`
           : "We will text you a code to signin"}
       </Text>
       <View
@@ -100,17 +106,17 @@ const AuthScreen = ({ navigation }) => {
             {
               borderColor: inputError
                 ? "red"
-                : codeSent || codeValid
+                : verificationId
                 ? "lightgrey"
                 : "lightblue",
-              backgroundColor: codeSent || codeValid ? "lightgrey" : "white",
+              backgroundColor: verificationId ? "lightgrey" : "white",
               width:
                 orientation === "landscape"
                   ? screenWidth * 0.4
                   : screenWidth * 0.9,
             },
           ]}
-          editable={!(codeSent || codeValid)}
+          editable={!verificationId}
           onChangeText={(value) => {
             setPhone(value);
             setInputError(false);
@@ -123,15 +129,15 @@ const AuthScreen = ({ navigation }) => {
           style={[
             styles.input,
             {
-              borderColor: codeSent || codeValid ? "lightblue" : "lightgrey",
-              backgroundColor: codeSent || codeValid ? "white" : "lightgrey",
+              borderColor: verificationId ? "lightblue" : "lightgrey",
+              backgroundColor: verificationId ? "white" : "lightgrey",
               width:
                 orientation === "landscape"
                   ? screenWidth * 0.2
                   : screenWidth * 0.9,
             },
           ]}
-          editable={codeSent || codeValid}
+          editable={verificationId ? true : false}
           onChangeText={(value) => setCode(value)}
           value={code}
           placeholder="Enter Code"
@@ -143,7 +149,7 @@ const AuthScreen = ({ navigation }) => {
           title={
             loading ? (
               <ActivityIndicator size="large" color="black" />
-            ) : codeSent || codeValid ? (
+            ) : verificationId ? (
               "Verify"
             ) : (
               "Submit"
@@ -152,6 +158,27 @@ const AuthScreen = ({ navigation }) => {
           onPress={handlSubmit}
         />
       </View>
+      <Button
+        type="clear"
+        buttonStyle={{
+          marginTop: orientation === "landscape" ? 0 : 15,
+          justifyContent: "flex-end",
+          paddingTop: 0,
+        }}
+        titleStyle={{ textDecorationLine: "underline", fontSize: 15 }}
+        disabled={loading}
+        disabledStyle={{ backgroundColor: "transparent" }}
+        title={loading ? "" : "Try a different number"}
+        onPress={() => {
+          dispatch(
+            authInfo({
+              verificationId: null,
+              codeSentError: false,
+              verifyCodeError: false,
+            })
+          );
+        }}
+      />
       <View
         style={[
           {
@@ -164,41 +191,10 @@ const AuthScreen = ({ navigation }) => {
           },
         ]}
       >
-        {codeValid || codeSent ? (
-          <Button
-            type="clear"
-            buttonStyle={{
-              marginTop: orientation === "landscape" ? 0 : 15,
-              justifyContent: "flex-end",
-              paddingTop: 0,
-            }}
-            titleStyle={{ textDecorationLine: "underline", fontSize: 15 }}
-            disabled={loading}
-            disabledStyle={{ backgroundColor: "transparent" }}
-            title={loading ? "" : "Try a different number"}
-            onPress={() => {
-              setCode("");
-              dispatch(authInfo({ codeValid: false, codeSent: false }));
-            }}
-          />
-        ) : (
-          ""
-        )}
-        {codeValid ? (
-          <Button
-            type="clear"
-            buttonStyle={{
-              marginTop: orientation === "landscape" ? 0 : 15,
-              justifyContent: "flex-start",
-              paddingTop: 0,
-            }}
-            titleStyle={{ textDecorationLine: "underline", fontSize: 15 }}
-            disabled={loading}
-            disabledStyle={{ backgroundColor: "transparent" }}
-            title={loading ? "" : "Resend Code"}
-            onPress={() => {
-              dispatch(authInfo({ resend: true, codeValid: false }));
-            }}
+        {app ? (
+          <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            firebaseConfig={app.options}
           />
         ) : (
           ""

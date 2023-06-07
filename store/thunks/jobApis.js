@@ -51,7 +51,6 @@ const fetchJobs =
         dispatch(jobsListing([]));
       }
     } catch (e) {
-      console.log("fetchJobs error", e.response.data);
       dispatch(jobsInfo({ searchError: true, searching: false }));
     }
   };
