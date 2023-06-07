@@ -1,4 +1,18 @@
-# explorejobs
+# Explore Jobs by Location
+
+# Mobile Application Design:
+
+- The application uses passwordless firebase phone login which only requires the users phone number and the user sign in by entering the code sent to them via text message. Currently only accepts phone number with country code +1.
+- Once logged in, a map is visible currently defaulted to CA but can be moved to desired area of interest within USA.
+- Job title can be entered for search in that area but is not required.
+- By clicking on search the screen is navigated to a list of jobs found in that area.
+- User can favorite the jobs by swiping right or remove the job by swiping left.
+- On review screen all the favorited jobs are visible and links to apply as well.
+- Settings screen can be used to remove the liked jobs.
+- The search results are provided by serpapi which scrapes from google jobs listing and is limited to 10 results per search as am using the free tier.
+- The application is setup for screen rotation.
+
+# Launching the App
 
 Expo go is needed to see the app's functionality as its not available in app store yet. Expo is free to install from app store below are the links.
 
@@ -10,8 +24,8 @@ Expo go is needed to see the app's functionality as its not available in app sto
 
 **IOS:**
 
-<img width="274" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/fae7f2c1-41c8-4d85-a2d5-502dc5b274fa">
+<img width="268" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/07181fdc-d256-4063-ad02-0b50c939f06f">
 
 **Android:**
 
-<img width="267" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/8ea213d7-19e4-4f7f-9982-c85af059a840">
+<img width="271" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/521d902f-ae91-4a75-abe8-080076db2fb8">

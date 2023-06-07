@@ -33,15 +33,15 @@ exports.JOBDETAILS = {
   jde: JOB_DETAILS_ENGINE,
 };
 
+exports.SEARCH = {
+  api_key: JOB_API_KEY,
+};
+
 exports.JOB_QUERY_PARAMS = {
   api_key: JOB_API_KEY,
   engine: JOB_ENGINE,
   q: "jobs",
   lrad: 10,
-};
-
-exports.SEARCH = {
-  api_key: JOB_API_KEY,
 };
 
 exports.GMAP = {

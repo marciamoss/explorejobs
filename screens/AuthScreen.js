@@ -89,7 +89,7 @@ const AuthScreen = ({ navigation }) => {
       <Text style={styles.textStyle}>
         {verificationId
           ? `Enter the verification Code texted to "${phone}"`
-          : "We will text you a code to signin"}
+          : "We will text you a code to sign in, Standard messaging rates apply"}
       </Text>
       <View
         style={[
