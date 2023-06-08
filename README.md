@@ -2,7 +2,7 @@
 
 # Mobile Application Design:
 
-- The application uses passwordless firebase phone login which only requires the users phone number and the user sign in by entering the code sent to them via text message. Currently only accepts phone number with country code +1.
+- The application uses one-time-password firebase phone login which only requires the users phone number and the user sign in by entering the code sent to them via text message. Currently only accepts phone number with country code +1.
 - Once logged in, a map is visible currently defaulted to CA but can be moved to desired area of interest within USA.
 - Job title can be entered for search in that area but is not required.
 - By clicking on search the screen is navigated to a list of jobs found in that area.
