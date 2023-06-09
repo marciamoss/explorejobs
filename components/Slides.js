@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
 import _ from "lodash";
-import { View, Text, ScrollView, StyleSheet, Platform } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Platform,
+  ActivityIndicator,
+} from "react-native";
 import { Button } from "react-native-elements";
 import { useGetOrientation } from "../hooks";
 
 const Slides = ({ data, onComplete }) => {
   const scrollRef = useRef();
-  const [screenWidth, screenHeight, orientation] = useGetOrientation();
+  const [screenWidth, screenHeight, orientation, layoutChange] =
+    useGetOrientation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [oSet, setOSet] = useState(0);
   const [iSet, setISet] = useState({ bottom: 0, left: 0, right: 0, top: 0 });
@@ -61,6 +69,20 @@ const Slides = ({ data, onComplete }) => {
       );
     });
   };
+
+  if (layoutChange) {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          height: screenHeight,
+        }}
+      >
+        <ActivityIndicator color="black" size="large" />
+      </View>
+    );
+  }
+
   return (
     <ScrollView
       ref={scrollRef}
