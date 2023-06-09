@@ -24,12 +24,12 @@ Expo go is needed to see the app's functionality as its not available in app sto
 
 **IOS:**
 
-<img width="270" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/b282b12a-4b86-4e13-9b1c-929043efdba6">
+<img width="271" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/9123b258-d6e6-402a-914c-a80049555438">
+
 
 **Android:**
 
-<img width="267" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/cac9614f-9e01-4e72-97f1-2effbce6facc"><br/><br/>
-
+<img width="271" alt="image" src="https://github.com/marciamoss/explorejobs/assets/45056799/99e9c334-07ef-45cb-9176-a816603371ac"><br/><br/>
 
 **Resources Used for training:**
 - React Native course: https://www.udemy.com/course/react-native-advanced
