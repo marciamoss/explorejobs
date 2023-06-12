@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet, View, ActivityIndicator, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  TextInput,
+  Text,
+} from "react-native";
 import MapView from "react-native-maps";
-import { Button, Icon } from "react-native-elements";
+import { Button } from "react-native-elements";
 import Popup from "../components/Popup";
+import Dropdown from "../components/Dropdown";
 import { fetchJobs, jobsInfo, jobsListing } from "../store";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const MapScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -15,6 +23,8 @@ const MapScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
+  const [expanded, setExpanded] = useState(false);
+  const [dropdownValue, setDropdownValue] = useState(10);
 
   useEffect(() => {
     setMapLoaded(true);
@@ -44,10 +54,17 @@ const MapScreen = ({ navigation }) => {
     );
   }
   const onButtonPress = () => {
+    setExpanded(false);
     dispatch(
-      fetchJobs(jobsInfo, jobsListing, jobTitle, () => {
-        navigation.navigate("Main", { screen: "Deck" });
-      })
+      fetchJobs(
+        jobsInfo,
+        jobsListing,
+        jobTitle,
+        (numberOfJobs = dropdownValue),
+        () => {
+          navigation.navigate("Main", { screen: "Deck" });
+        }
+      )
     );
   };
   return (
@@ -73,9 +90,11 @@ const MapScreen = ({ navigation }) => {
             searching ? (
               <ActivityIndicator size="large" color="white" />
             ) : (
-              <Icon color="white" name="search" size={35}></Icon>
+              <Icon color="white" name="magnify" size={35}></Icon>
             )
           }
+          disabled={searching}
+          disabledStyle={{ backgroundColor: "#009688" }}
           buttonStyle={{ backgroundColor: "#009688" }}
           onPress={onButtonPress}
         />
@@ -86,7 +105,30 @@ const MapScreen = ({ navigation }) => {
           placeholder="Job Title (Optional)"
           editable={!searching}
         />
+        <Button
+          title={
+            expanded ? (
+              <Icon color="white" name="chevron-down" size={35}></Icon>
+            ) : (
+              <Icon color="white" name="chevron-up" size={35}></Icon>
+            )
+          }
+          disabled={searching}
+          disabledStyle={{ backgroundColor: "#009688" }}
+          buttonStyle={{ backgroundColor: "#009688" }}
+          onPress={() => setExpanded(!expanded)}
+        />
       </View>
+      {expanded ? (
+        <Dropdown
+          list={[10, 20, 30, 40, 50]}
+          setDropdownValue={setDropdownValue}
+          dropdownValue={dropdownValue}
+        />
+      ) : (
+        ""
+      )}
+
       {modalVisible ? (
         <Popup
           modalVisible={modalVisible}

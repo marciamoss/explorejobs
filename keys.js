@@ -25,16 +25,16 @@ exports.FIREBASECONFIG = {
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
+exports.SEARCH = {
+  api_key: JOB_API_KEY,
+};
+
 exports.JOB = {
   url: JOB_ROOT_URL,
 };
 
 exports.JOBDETAILS = {
   jde: JOB_DETAILS_ENGINE,
-};
-
-exports.SEARCH = {
-  api_key: JOB_API_KEY,
 };
 
 exports.JOB_QUERY_PARAMS = {

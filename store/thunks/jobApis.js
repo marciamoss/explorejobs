@@ -2,14 +2,14 @@ import axios from "axios";
 import _ from "lodash";
 import qs from "qs";
 const keys = require("../../keys.js");
-
-const buildJobsUrl = (zip, jobTitle, st) => {
+const buildJobsUrl = (zip, jobTitle, start) => {
   if (jobTitle) {
     keys.JOB_QUERY_PARAMS.q = jobTitle;
   }
   const query = qs.stringify({
     ...keys.JOB_QUERY_PARAMS,
     location: zip,
+    start,
   });
   return `${keys.JOB.url}${query}`;
 };
@@ -29,26 +29,40 @@ const reverseGeocode = async (region) => {
 };
 
 const fetchJobs =
-  (jobsInfo, jobsListing, jobTitle, callback) => async (dispatch, getState) => {
+  (jobsInfo, jobsListing, jobTitle, numberOfJobs, callback) =>
+  async (dispatch, getState) => {
+    let jobs = [];
     dispatch(jobsListing([]));
     dispatch(jobsInfo({ searching: true }));
     try {
       const { region } = getState().jobs;
       const { zip } = await reverseGeocode(region);
-      const url = buildJobsUrl(zip, jobTitle, 0);
-      let results = await axios.get(url);
+      if (zip) {
+        let jobApi = [axios.get(buildJobsUrl(zip, jobTitle, 0))];
+        if (numberOfJobs > 10) {
+          for (let i = 10; i < numberOfJobs; i = i + 10) {
+            jobApi.push(axios.get(buildJobsUrl(zip, jobTitle, i)));
+          }
+        }
+        let results = await Promise.all(jobApi);
+        for (let i = 0; i < numberOfJobs; i = i + 10) {
+          jobs = [...jobs, ...results[i / 10]?.data?.jobs_results];
+        }
 
-      if (results && results?.data && results?.data?.jobs_results) {
-        dispatch(jobsInfo({ searching: false }));
-        dispatch(jobsListing(results?.data?.jobs_results));
-        if (results?.data?.jobs_results.length === 0) {
-          dispatch(jobsInfo({ noListing: true }));
+        if (jobs.length) {
+          dispatch(jobsInfo({ searching: false }));
+          dispatch(jobsListing(jobs));
+          if (jobs.length === 0) {
+            dispatch(jobsInfo({ noListing: true }));
+          } else {
+            callback();
+          }
         } else {
-          callback();
+          dispatch(jobsInfo({ noListing: true, searching: false }));
+          dispatch(jobsListing([]));
         }
       } else {
-        dispatch(jobsInfo({ noListing: true, searching: false }));
-        dispatch(jobsListing([]));
+        dispatch(jobsInfo({ searchError: true, searching: false }));
       }
     } catch (e) {
       dispatch(jobsInfo({ searchError: true, searching: false }));
