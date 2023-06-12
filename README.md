@@ -23,13 +23,9 @@ Expo go is needed to see the app's functionality as its not available in app sto
 
 **To launch the app, Once Expo go is installed scan the below with your phone's camera, ios and android respectively.**
 
-**IOS:**
+<a target="blank" href="./assets/ios.jpg">**--> For iOS App Click Here <--**</a>
 
-<img width="200" alt="image" src="./assets/ios.jpg">
-
-**Android:**
-
-<img width="200" alt="image" src="./assets/android.jpg"><br/><br/>
+<a target="blank" href="./assets/android.jpg">**--> For Android App Click Here <--**<a>
 
 **Resources Used for training:**
 
