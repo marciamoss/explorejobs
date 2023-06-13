@@ -17,7 +17,7 @@ const useGetOrientation = () => {
     setLayoutChange(true);
     let timerId = setTimeout(() => {
       setLayoutChange(false);
-    }, 50);
+    }, 5);
     return () => {
       clearTimeout(timerId);
     };

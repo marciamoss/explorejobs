@@ -16,15 +16,47 @@ const buildJobsUrl = (zip, jobTitle, start) => {
 
 const reverseGeocode = async (region) => {
   try {
-    const response = await axios.get(
+    const {
+      data: {
+        results: [{ address_components }],
+      },
+    } = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${region.latitude},${region.longitude}&key=${keys.GMAP.api_key}&result_type=postal_code`
     );
-    const zip = response.data.results[0].address_components.find(
+    const zip = address_components.find(
       (component) => component.types[0] === "postal_code"
     );
     return { zip: zip.long_name || zip.short_name };
   } catch (error) {
     return { zip: null };
+  }
+};
+
+const geocode = (address, jobsInfo) => async (dispatch) => {
+  try {
+    const {
+      data: {
+        results: [
+          {
+            geometry: { location },
+          },
+        ],
+      },
+    } = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${keys.GMAP.api_key}`
+    );
+    dispatch(
+      jobsInfo({
+        region: {
+          longitude: location.lng,
+          latitude: location.lat,
+          longitudeDelta: 0.04,
+          latitudeDelta: 0.09,
+        },
+      })
+    );
+  } catch (error) {
+    dispatch(jobsInfo({ locationChangeError: true }));
   }
 };
 
@@ -68,4 +100,4 @@ const fetchJobs =
       dispatch(jobsInfo({ searchError: true, searching: false }));
     }
   };
-export { fetchJobs };
+export { fetchJobs, geocode };

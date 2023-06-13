@@ -6,25 +6,27 @@ import {
   ActivityIndicator,
   TextInput,
   Text,
+  Pressable,
 } from "react-native";
 import MapView from "react-native-maps";
 import { Button } from "react-native-elements";
 import Popup from "../components/Popup";
+import LocationChange from "../components/LocationChange";
 import Dropdown from "../components/Dropdown";
 import { fetchJobs, jobsInfo, jobsListing } from "../store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const MapScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { region, searchError, noListing, searching } = useSelector(
-    (state) => state.jobs
-  );
+  const { region, searchError, noListing, searching, locationChangeError } =
+    useSelector((state) => state.jobs);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
   const [expanded, setExpanded] = useState(false);
   const [dropdownValue, setDropdownValue] = useState(10);
+  const [locationChange, setLocationChange] = useState(false);
 
   useEffect(() => {
     setMapLoaded(true);
@@ -37,6 +39,14 @@ const MapScreen = ({ navigation }) => {
       dispatch(jobsInfo({ searchError: false }));
     }
   }, [searchError]);
+
+  useEffect(() => {
+    if (locationChangeError) {
+      setModalVisible(true);
+      setPopupText("Location Could Not Be Found");
+      dispatch(jobsInfo({ locationChangeError: false }));
+    }
+  }, [locationChangeError]);
 
   useEffect(() => {
     if (noListing) {
@@ -129,6 +139,39 @@ const MapScreen = ({ navigation }) => {
         ""
       )}
 
+      <Pressable
+        style={[
+          styles.locationChangeSection,
+          {
+            backgroundColor: "#009688",
+            width: 80,
+            marginLeft: 15,
+            padding: 5,
+          },
+        ]}
+        onPress={() => {
+          setLocationChange(!locationChange);
+        }}
+      >
+        <Text
+          style={{
+            color: "white",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
+          Jump to
+        </Text>
+      </Pressable>
+      {locationChange ? (
+        <LocationChange
+          locationChange={locationChange}
+          setLocationChange={setLocationChange}
+        />
+      ) : (
+        ""
+      )}
+
       {modalVisible ? (
         <Popup
           modalVisible={modalVisible}
@@ -164,6 +207,16 @@ const styles = StyleSheet.create({
     top: 60,
     left: 0,
     right: 0,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  locationChangeSection: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",

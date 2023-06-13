@@ -12,6 +12,7 @@ const initialState = {
   searching: false,
   searchError: null,
   noListing: false,
+  locationChangeError: false,
 };
 
 const jobsSlice = createSlice({
