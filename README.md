@@ -4,6 +4,7 @@
 
 - The application uses one-time-password firebase phone login which only requires the users phone number and the user sign in by entering the code sent to them via text message. Currently only accepts phone number with country code +1.
 - Once logged in, a map is visible currently defaulted to CA but can be moved to desired area of interest within USA.
+- For a quicker change of location on the map, if a user chooses not to drag on the map, there is an option of clicking on **_Jump to_** on bottom left corner of the map and type in zip or address(full/partial) or state to have the map move to desired location for search.
 - Job title can be entered for search in that area but is not required.
 - Dropdown option to pick number of results(10, 20, 30, 40, 50) for each search is available. Defaults to 10 per search.
 - By clicking on search the screen is navigated to a list of jobs found in that area.
