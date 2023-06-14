@@ -1,5 +1,13 @@
 import React from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  ScrollView,
+} from "react-native";
 
 const Popup = ({ modalVisible, setModalVisible, modalText }) => {
   return (
@@ -22,7 +30,9 @@ const Popup = ({ modalVisible, setModalVisible, modalText }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{modalText}</Text>
+            <ScrollView style={{ marginBottom: 10 }}>
+              <Text style={styles.modalText}>{modalText}</Text>
+            </ScrollView>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
