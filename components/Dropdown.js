@@ -47,12 +47,11 @@ const Dropdown = ({ list, setDropdownValue = () => {}, dropdownValue }) => {
           marginRight: 15,
           marginBottom: orientation === "landscape" ? 15 : 0,
           fontSize: 18,
-          fontWeight: "bold",
           width: 70,
           textAlign: "center",
         }}
       >
-        Max # of Jobs
+        # of Jobs
       </Text>
       {list.length > 0 &&
         list.map((item, index) => (
@@ -87,9 +86,7 @@ const Dropdown = ({ list, setDropdownValue = () => {}, dropdownValue }) => {
               <Text
                 style={{
                   fontSize: 18,
-                  fontWeight: "900",
                   color: dropdownValue === item ? "#009688" : "white",
-                  fontWeight: "bold",
                 }}
               >
                 {item}
@@ -105,7 +102,7 @@ const styles = StyleSheet.create({
   dropdownSection: {
     position: "absolute",
     top: 130,
-    right: 5,
+    left: 0,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",

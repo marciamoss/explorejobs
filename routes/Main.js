@@ -20,7 +20,7 @@ const Main = () => {
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
-            <Icon color={color} name="my-location" size={30}></Icon>
+            <Icon color={color} name="my-location" size={25}></Icon>
           ),
         }}
       />
@@ -35,7 +35,7 @@ const Main = () => {
           title: "Jobs",
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
-            <Icon color={color} name="description" size={30}></Icon>
+            <Icon color={color} name="description" size={25}></Icon>
           ),
         }}
       />
@@ -50,7 +50,7 @@ const Main = () => {
           headerShown: false,
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
-            <Icon color={color} name="favorite" size={30}></Icon>
+            <Icon color={color} name="favorite" size={25}></Icon>
           ),
         }}
       />

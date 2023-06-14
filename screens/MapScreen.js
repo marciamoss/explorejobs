@@ -97,26 +97,6 @@ const MapScreen = ({ navigation }) => {
       >
         <Button
           title={
-            searching ? (
-              <ActivityIndicator size="large" color="white" />
-            ) : (
-              <Icon color="white" name="magnify" size={35}></Icon>
-            )
-          }
-          disabled={searching}
-          disabledStyle={{ backgroundColor: "#009688" }}
-          buttonStyle={{ backgroundColor: "#009688" }}
-          onPress={onButtonPress}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setJobTitle}
-          value={jobTitle}
-          placeholder="Job Title (Optional)"
-          editable={!searching}
-        />
-        <Button
-          title={
             expanded ? (
               <Icon color="white" name="chevron-down" size={35}></Icon>
             ) : (
@@ -127,6 +107,26 @@ const MapScreen = ({ navigation }) => {
           disabledStyle={{ backgroundColor: "#009688" }}
           buttonStyle={{ backgroundColor: "#009688" }}
           onPress={() => setExpanded(!expanded)}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={setJobTitle}
+          value={jobTitle}
+          placeholder="Job Title (Optional)"
+          editable={!searching}
+        />
+        <Button
+          title={
+            searching ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <Icon color="white" name="magnify" size={35}></Icon>
+            )
+          }
+          disabled={searching}
+          disabledStyle={{ backgroundColor: "#009688" }}
+          buttonStyle={{ backgroundColor: "#009688" }}
+          onPress={onButtonPress}
         />
       </View>
       {expanded ? (
@@ -140,19 +140,12 @@ const MapScreen = ({ navigation }) => {
       )}
 
       <Pressable
-        style={[
-          styles.locationChangeSection,
-          {
-            backgroundColor: "#009688",
-            width: 80,
-            marginLeft: 15,
-            padding: 5,
-          },
-        ]}
+        style={styles.locationChangeSection}
         onPress={() => {
           setLocationChange(!locationChange);
         }}
       >
+        <Icon color="white" name="map-marker-radius-outline" size={30}></Icon>
         <Text
           style={{
             color: "white",
@@ -160,7 +153,7 @@ const MapScreen = ({ navigation }) => {
             textAlign: "center",
           }}
         >
-          Jump to
+          Jump To
         </Text>
       </Pressable>
       {locationChange ? (
@@ -214,14 +207,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   locationChangeSection: {
-    position: "absolute",
+    alignItems: "center",
     bottom: 10,
-    left: 0,
+    borderRadius: 50,
+    backgroundColor: "#009688",
+    elevation: 2,
     flex: 1,
     flexDirection: "row",
+    height: 80,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    left: 0,
+    marginLeft: 15,
+    position: "absolute",
+    padding: 5,
+    width: 80,
+    flexDirection: "column",
   },
   searchIcon: {
     padding: 5,
