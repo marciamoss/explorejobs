@@ -9,8 +9,8 @@
 - Dropdown option to pick number of results(10, 20, 30, 40, 50) for each search is available. Defaults to 10 per search.
 - By clicking on search the screen is navigated to a list of jobs found in that area.
 - User can favorite the jobs by swiping right or remove the job by swiping left.
-- On review screen all the favorited jobs are visible and links to apply as well.
-- Settings screen can be used to remove the liked jobs.
+- On review screen all the favorited jobs are visible and links to apply as well. If user prefers to delete individual job the option is included within each job.
+- Settings screen can be used to remove all the liked jobs.
 - The search results are provided by serpapi which scrapes from google jobs listing.
 - The application is setup for screen rotation.
 
