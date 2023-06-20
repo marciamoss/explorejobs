@@ -18,8 +18,13 @@ const likedJobsSlice = createSlice({
     clearLikedJobs(state, action) {
       state.likedJobs = [];
     },
+    removeLikedJob(state, action) {
+      state.likedJobs = state.likedJobs.filter(
+        (j) => j.job_id !== action.payload
+      );
+    },
   },
 });
 
-export const { liked, clearLikedJobs } = likedJobsSlice.actions;
+export const { liked, clearLikedJobs, removeLikedJob } = likedJobsSlice.actions;
 export const likedJobsReducer = likedJobsSlice.reducer;

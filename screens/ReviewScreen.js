@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, Linking, Pressable } from "react-native";
 import { Card, Button } from "react-native-elements";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Popup from "../components/Popup";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { removeLikedJob } from "../store";
 
 const ReviewScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { likedJobs } = useSelector((state) => state.likedJobs);
   const [modalVisible, setModalVisible] = useState(false);
+
   const renderLikedJobs = () => {
     return likedJobs.map((job) => {
       const {
@@ -69,6 +73,14 @@ const ReviewScreen = ({ navigation }) => {
                 </Pressable>
               );
             })}
+            <View style={styles.detailWrapper}>
+              <Pressable
+                style={[styles.button]}
+                onPress={() => dispatch(removeLikedJob(job_id))}
+              >
+                <Icon name="delete-circle" color="#F44336" size={50}></Icon>
+              </Pressable>
+            </View>
           </View>
         </Card>
       );

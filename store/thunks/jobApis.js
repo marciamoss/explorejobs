@@ -65,7 +65,7 @@ const fetchJobs =
   async (dispatch, getState) => {
     let jobs = [];
     dispatch(jobsListing([]));
-    dispatch(jobsInfo({ searching: true }));
+    dispatch(jobsInfo({ searching: true, searchError: false }));
     try {
       const { region } = getState().jobs;
       const { zip } = await reverseGeocode(region);
@@ -77,8 +77,11 @@ const fetchJobs =
           }
         }
         let results = await Promise.all(jobApi);
+
         for (let i = 0; i < numberOfJobs; i = i + 10) {
-          jobs = [...jobs, ...results[i / 10]?.data?.jobs_results];
+          if (!results[i / 10]?.data?.error) {
+            jobs = [...jobs, ...results[i / 10]?.data?.jobs_results];
+          }
         }
 
         if (jobs.length) {

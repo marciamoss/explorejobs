@@ -7,8 +7,8 @@ import {
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
   FIREBASE_MEASUREMENT_ID,
-  JOB_ROOT_URL,
   JOB_API_KEY,
+  JOB_ROOT_URL,
   JOB_ENGINE,
   JOB_DETAILS_ENGINE,
   MAP_API_KEY,
@@ -25,12 +25,12 @@ exports.FIREBASECONFIG = {
   measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
-exports.SEARCH = {
-  api_key: JOB_API_KEY,
-};
-
 exports.JOB = {
   url: JOB_ROOT_URL,
+};
+
+exports.SEARCH = {
+  api_key: JOB_API_KEY,
 };
 
 exports.JOBDETAILS = {

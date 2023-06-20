@@ -17,6 +17,7 @@ import {
   likedJobsReducer,
   liked,
   clearLikedJobs,
+  removeLikedJob,
 } from "./slices/likedJobsSlice";
 
 const rootReducer = combineReducers({
@@ -43,7 +44,14 @@ const store = configureStore({
     }),
 });
 
-export { authInfo, jobsInfo, liked, jobsListing, clearLikedJobs };
+export {
+  authInfo,
+  jobsInfo,
+  liked,
+  jobsListing,
+  clearLikedJobs,
+  removeLikedJob,
+};
 export * from "./thunks/authApis";
 export * from "./thunks/jobApis";
 export * from "./thunks/likedJobsApis";
