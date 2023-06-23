@@ -116,6 +116,7 @@ const DeckScreen = ({ navigation }) => {
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}
                     modalText={job.description}
+                    scroll={true}
                   />
                 ) : (
                   ""

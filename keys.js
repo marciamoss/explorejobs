@@ -1,4 +1,5 @@
 import {
+  MAP_API_KEY,
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
   FIREBASE_DATABASE_URL,
@@ -11,7 +12,6 @@ import {
   JOB_ROOT_URL,
   JOB_ENGINE,
   JOB_DETAILS_ENGINE,
-  MAP_API_KEY,
 } from "@env";
 
 exports.FIREBASECONFIG = {

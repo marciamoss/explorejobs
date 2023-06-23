@@ -9,7 +9,12 @@ import {
   ScrollView,
 } from "react-native";
 
-const Popup = ({ modalVisible, setModalVisible, modalText }) => {
+const Popup = ({
+  modalVisible,
+  setModalVisible,
+  modalText,
+  scroll = false,
+}) => {
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -30,9 +35,14 @@ const Popup = ({ modalVisible, setModalVisible, modalText }) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <ScrollView style={{ marginBottom: 10 }}>
+            {scroll ? (
+              <ScrollView style={{ marginBottom: 10 }}>
+                <Text style={styles.modalText}>{modalText}</Text>
+              </ScrollView>
+            ) : (
               <Text style={styles.modalText}>{modalText}</Text>
-            </ScrollView>
+            )}
+
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -51,7 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
   },
   modalView: {
     margin: 20,

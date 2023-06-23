@@ -32,9 +32,10 @@ const WelcomeScreen = ({ navigation }) => {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      await SplashScreen.hideAsync();
       if (token) {
         navigation.navigate("Main", { screen: "Map" });
+      } else {
+        await SplashScreen.hideAsync();
       }
     }
   }, [appIsReady]);

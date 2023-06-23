@@ -15,12 +15,12 @@ import LocationChange from "../components/LocationChange";
 import Dropdown from "../components/Dropdown";
 import { fetchJobs, jobsInfo, jobsListing } from "../store";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import * as SplashScreen from "expo-splash-screen";
 
 const MapScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { region, searchError, noListing, searching, locationChangeError } =
     useSelector((state) => state.jobs);
-  const [mapLoaded, setMapLoaded] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState(false);
   const [jobTitle, setJobTitle] = useState("");
@@ -29,7 +29,9 @@ const MapScreen = ({ navigation }) => {
   const [locationChange, setLocationChange] = useState(false);
 
   useEffect(() => {
-    setMapLoaded(true);
+    (async () => {
+      await SplashScreen.hideAsync();
+    })();
   }, []);
 
   useEffect(() => {
@@ -56,13 +58,6 @@ const MapScreen = ({ navigation }) => {
     }
   }, [noListing]);
 
-  if (!mapLoaded) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
   const onButtonPress = () => {
     setExpanded(false);
     dispatch(

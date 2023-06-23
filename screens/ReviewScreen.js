@@ -57,6 +57,7 @@ const ReviewScreen = ({ navigation }) => {
                   modalVisible={modalVisible}
                   setModalVisible={setModalVisible}
                   modalText={description}
+                  scroll={true}
                 />
               ) : (
                 ""
