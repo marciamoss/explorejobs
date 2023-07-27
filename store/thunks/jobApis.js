@@ -5,6 +5,8 @@ const keys = require("../../keys.js");
 const buildJobsUrl = (zip, jobTitle, start) => {
   if (jobTitle) {
     keys.JOB_QUERY_PARAMS.q = jobTitle;
+  } else {
+    keys.JOB_QUERY_PARAMS.q = "jobs";
   }
   const query = qs.stringify({
     ...keys.JOB_QUERY_PARAMS,
