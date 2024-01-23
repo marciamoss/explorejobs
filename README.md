@@ -17,6 +17,7 @@
 # Launching the App
 
 Expo go is needed to see the app's functionality as its not available in app store yet. Expo is free to install from app store below are the links.
+**You need to have expo go SDK's of 49 or higher. If it's less than version 49 update the expo go app**
 
 **Android:** https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US&gl=US
 
